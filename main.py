@@ -36,5 +36,5 @@ def get_website(url, headers):
 
 
 if __name__ == '__main__':
-    buptUrl = 'http://my.bupt.edu.cn/xntz_content.jsp?urltype=news.NewsContentUrl&wbtreeid=1642&wbnewsid=88729'
+    buptUrl = 'http://my.bupt.edu.cn/list.jsp?urltype=tree.TreeTempUrl&wbtreeid=1154'
     print(get_website(buptUrl, bupt_headers))
