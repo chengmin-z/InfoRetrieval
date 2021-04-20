@@ -5,6 +5,8 @@ from urllib.request import Request
 from io import BytesIO
 
 # 经过了多次尝试后 已经登陆用户访问信息门户 只需要以下header
+# Cookie使用时需要更新
+
 bupt_headers = {
     # 'Host': 'my.bupt.edu.cn',
     # 'Connection': 'keep-alive',
@@ -19,6 +21,7 @@ bupt_headers = {
 
 
 # 访问特定网站使用GET请求 并使用headers
+
 def get_website(url, headers):
     try:
         response = Request(url, headers=headers)
