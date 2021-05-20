@@ -7,7 +7,7 @@ import re
 import os
 
 headers: dict = {'Accept-Encoding': 'gzip, deflate'}
-site_name: str = 'http://www.zhongyoo.com/name'
+site_name: str = 'http://www.zhongyoo.com'
 index_file = open(os.getcwd() + '/results/' + 'index' + '.txt', 'w')
 
 
@@ -31,7 +31,7 @@ def process_pages_nav(pages: list):
     for index, page in enumerate(pages):
         progress: str = format(float(index)/float(total_page), '.2f')
         print('progress: ' + progress + ' ' + str(index) + ' of ' + str(total_page))
-        current_link: str = site_name + '/' + page
+        current_link: str = site_name + '/name/' + page
         current_html: str = get_website(current_link, headers)
         name_results: list = re.findall(name_pattern, current_html)
         detail_links: list = re.findall(detail_page_pattern, current_html)
@@ -43,6 +43,9 @@ def process_pages_nav(pages: list):
 
 def process_detail_page(link: str, name: str):
     detail_html: str = get_website(link, headers)
+    # print(detail_html)
+    image_pattern: str = 'src="(.*).jpg"'
+    image_results: list = re.findall(image_pattern, detail_html)
     dr = re.compile(r'<[^>]+>', re.S)
     html_text = dr.sub('', detail_html)
     start_index: int = html_text.find('show_view_05();')
@@ -57,11 +60,15 @@ def process_detail_page(link: str, name: str):
     print('generate: ' + os.getcwd() + '/results/' + name + '.txt')
     f = open(os.getcwd() + '/results/' + name + '.txt', 'w')
     f.write(final_text)
-    index_file.write(name + ' ' + link + '\n')
+    index_file.write(name + ' ' + link + ' ')
+    if len(image_results) != 0:
+        index_file.write(site_name + image_results[0] + '.jpg' + '\n')
+    else:
+        index_file.write('\n')
 
 
 def process():
-    html: str = get_website(site_name, headers)
+    html: str = get_website(site_name + '/name', headers)
     pages_pattern: str = '<option value=\'(.*)\''
     pages_link: list = re.findall(pages_pattern, html)
     process_pages_nav(pages_link)
