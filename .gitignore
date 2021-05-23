@@ -4,3 +4,4 @@
 !/results/.gitkeep
 /database/*
 !/database/.gitkeep
+/__pycache__
