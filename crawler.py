@@ -33,7 +33,7 @@ class Crawler:
         total_page = len(pages)
         for index, page in enumerate(pages):
             progress: str = format(float(index)/float(total_page), '.2f')
-            print('progress: ' + progress + ' ' + str(index) + ' of ' + str(total_page))
+            print('progress : ' + progress + ' ' + str(index) + ' of ' + str(total_page))
             current_link: str = self.__site_name + '/name/' + page
             current_html: str = self.__get_website(current_link)
             name_results: list = re.findall(name_pattern, current_html)
@@ -41,7 +41,7 @@ class Crawler:
             if len(name_results) == len(detail_links):
                 for index_y, detail_link in enumerate(detail_links):
                     self.__process_detail_page(detail_link, name_results[index_y])
-        print('get files complete')
+        print('progress: get files complete')
 
     def __process_detail_page(self, link: str, name: str):
         print('process: ' + link)
