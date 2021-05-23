@@ -2,3 +2,5 @@
 /.idea
 /results/*
 !/results/.gitkeep
+/database/*
+!/database/.gitkeep
