@@ -23,7 +23,7 @@ class Crawler:
             f = gzip.GzipFile(fileobj=buff)
             result: str = f.read().decode('gbk', errors='replace')
         except URLError as error:
-            print('Downloading error: ' + error.reason)
+            print('[INFO] Downloading error')
             result = ''
         return result
 
@@ -32,8 +32,8 @@ class Crawler:
         detail_page_pattern: str = '<div class="sp"><span class="pics pics2"> <a href=\'(.*)\' class=\'title\'>'
         total_page = len(pages)
         for index, page in enumerate(pages):
-            progress: str = format(float(index)/float(total_page), '.2f')
-            print('progress : ' + progress + ' ' + str(index) + ' of ' + str(total_page))
+            progress: str = format(float(index)/float(total_page), '.2%')
+            print('[INFO] progress: ' + progress + ' ' + str(index) + ' of ' + str(total_page))
             current_link: str = self.__site_name + '/name/' + page
             current_html: str = self.__get_website(current_link)
             name_results: list = re.findall(name_pattern, current_html)
@@ -41,10 +41,10 @@ class Crawler:
             if len(name_results) == len(detail_links):
                 for index_y, detail_link in enumerate(detail_links):
                     self.__process_detail_page(detail_link, name_results[index_y])
-        print('progress: get files complete')
+        print('[INFO] progress: 100% get files complete')
 
     def __process_detail_page(self, link: str, name: str):
-        print('process: ' + link)
+        print('[INFO] process : ' + link)
         detail_html: str = self.__get_website(link)
         image_pattern: str = 'src="(.*).jpg"'
         image_results: list = re.findall(image_pattern, detail_html)
@@ -59,7 +59,7 @@ class Crawler:
             if line_text != '':
                 final_text += line_text + '\n'
         final_text = final_text[0:len(final_text)-1]
-        print('generate: ' + os.getcwd() + '/results/' + name + '.txt')
+        print('[INFO] generate: ' + '../results/' + name + '.txt')
         f = open(os.getcwd() + '/results/' + name + '.txt', 'w')
         f.write(final_text)
         self.__index_file.write(name + ' ' + link + ' ')

@@ -3,7 +3,6 @@ import signal
 
 import retrieval
 from crawler import Crawler
-import dao
 
 from sanic import Sanic
 from sanic import response
@@ -14,7 +13,7 @@ app = Sanic('Remote')
 
 
 @app.exception(exceptions.NotFound)
-async def ignore_404(request, exception):
+async def ignore_404():
     return response.text('errorUrl', status=404)
 
 
@@ -26,9 +25,12 @@ async def query(request):
 
 
 def main():
-    need_get_file: bool = True
-    if need_get_file:
+    print('[INFO] Welcome to use the backend of retrieval system')
+    update_file = input('[INFO] Do you want update the datafiles and construct inverted index? (yes/on): ')
+    if update_file == 'yes':
         Crawler().process()
+
+    print('[INFO] Backend running')
 
     signal.signal(signal.SIGINT, signal.SIG_DFL)
 
