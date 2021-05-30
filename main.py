@@ -7,6 +7,7 @@ import search
 from sanic import Sanic
 from sanic import response
 from sanic import exceptions
+import time
 
 
 app = Sanic('Remote')
@@ -15,6 +16,15 @@ app = Sanic('Remote')
 @app.exception(exceptions.NotFound)
 async def ignore_404():
     return response.text('errorUrl', status=404)
+
+
+@app.post('/getPic')
+async def get_pic(request):
+    f = request.files.get("img")
+    with open('./temp/' + str(int(time.time())) + '.jpg', 'wb') as fileUp:  # 这里必须为读写二进制模式的 wb
+        fileUp.write(f.body)
+        fileUp.close()
+    return response.json({'code': 200, 'msg': 'success'}, status=200)
 
 
 @app.post('/query')

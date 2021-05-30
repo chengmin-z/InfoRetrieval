@@ -5,3 +5,5 @@
 /database/*
 !/database/.gitkeep
 /__pycache__
+/temp/*
+!/temp/.gitkeep
