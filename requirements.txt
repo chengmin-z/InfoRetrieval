@@ -13,3 +13,5 @@ typing-extensions==3.10.0.0
 ujson==4.0.2
 uvloop==0.15.2
 websockets==8.1
+
+jieba~=0.42.1

@@ -13,7 +13,7 @@ class Crawler:
     def __init__(self):
         self.__headers: dict = {'Accept-Encoding': 'gzip, deflate'}
         self.__site_name: str = 'http://www.zhongyoo.com'
-        self.__index_file: TextIO = open(os.getcwd() + '/results/' + 'index.txt', 'w')
+        self.__index_file: TextIO = open(os.getcwd() + '/resource/' + 'index.txt', 'w')
 
     def __get_website(self, url: str):
         try:

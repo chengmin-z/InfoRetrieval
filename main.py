@@ -1,8 +1,8 @@
 import logging
 import signal
 
-import retrieval
 from crawler import Crawler
+import search
 
 from sanic import Sanic
 from sanic import response
@@ -20,15 +20,24 @@ async def ignore_404():
 @app.post('/query')
 async def query(request):
     query_str: str = request.json.get('input')
-    result = retrieval.retrieval_query(query_str)
+    result = search.retrieval_query(query_str)
     return response.json({'code': 200, 'msg': 'success', 'data': result}, status=200)
 
 
 def main():
     print('[INFO] Welcome to use the backend of retrieval system')
-    update_file = input('[INFO] Do you want update the datafiles and construct inverted index? (yes/on): ')
+    update_file = input('[INFO] Do you want to update the datafiles and construct inverted index? (yes/on): ')
     if update_file == 'yes':
         Crawler().process()
+        print('[INFO] progress: Creating inverse index txt_file')
+        search.create_inverse_txt()
+        print('[INFO] progress: Created inverse index txt_file done')
+    else:
+        update_reverse_index = input('[INFO] Do you want to construct inverted index? (yes/on): ')
+        if update_reverse_index == 'yes':
+            print('[INFO] progress: Creating inverse index txt_file')
+            search.create_inverse_txt()
+            print('[INFO] progress: Created inverse index txt_file done')
 
     print('[INFO] Backend running')
 
