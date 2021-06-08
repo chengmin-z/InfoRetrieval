@@ -200,10 +200,10 @@ def get_similarity(docu_set, keywords, text_list):
             tf = compute_tf(w, text_words)
             idf = compute_idf(w, docu_set)
             tf_idf += compute_tfidf(tf, idf)
-        if tf_idf > 0.015:
+        if tf_idf > 0.005:
             similarity[name] = tf_idf
-        if name.strip('.txt') == w:
-            similarity[name] += 0.1
+            if name.strip('.txt') == w:
+                similarity[name] += 0.1
     return similarity
 
 
@@ -224,7 +224,10 @@ def get_result(similarity, title, keywords):
         if title.strip('.txt') == k:
             name = line[0]
             url = line[1]
-            img_url = line[2]
+            if len(line) > 2:
+                img_url = line[2]
+            else:
+                img_url = ''
             break
         line = f2.readline()
     f2.close()
