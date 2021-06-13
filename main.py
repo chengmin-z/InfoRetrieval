@@ -1,14 +1,15 @@
 import logging
 import signal
+import time
 
 from crawler import Crawler
-from alibaba import AliClient
+from extract import ExtractorClient
 import search
+import extract
 
 from sanic import Sanic
 from sanic import response
 from sanic import exceptions
-
 
 app = Sanic('Remote')
 
@@ -21,14 +22,33 @@ async def ignore_404():
 @app.post('infoAccess/extraction')
 async def extraction(request):
     query_str: str = request.json.get('input')
-    result = AliClient.process(content=query_str)
+    start = time.perf_counter()
+    result = ExtractorClient.process(content=query_str)
+    end = time.perf_counter()
+    print('Extractor Running time: %s Seconds' % (end - start))
     return response.json({'code': 200, 'msg': 'success', 'data': result['body']['Content']}, status=200)
 
 
 @app.post('infoAccess/retrieval')
 async def retrieval(request):
     query_str: str = request.json.get('input')
+    start = time.perf_counter()
     result = search.retrieval_query(query_str)
+    end = time.perf_counter()
+    print('Retrieval Running time: %s Seconds' % (end - start))
+    return response.json({'code': 200, 'msg': 'success', 'data': result}, status=200)
+
+
+@app.get('infoAccess/getNames')
+async def get_names(request):
+    result = extract.get_all_name()
+    return response.json({'code': 200, 'msg': 'success', 'data': result}, status=200)
+
+
+@app.post('infoAccess/getInfoContent')
+async def get_info_content(request):
+    name: str = request.json.get('name')
+    result = extract.get_info_content(name)
     return response.json({'code': 200, 'msg': 'success', 'data': result}, status=200)
 
 
