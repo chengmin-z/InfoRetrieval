@@ -81,7 +81,7 @@ def main():
     log.addHandler(_consoleHandler)
     log.setLevel(logging.DEBUG)
 
-    app.run(host='127.0.0.1', port=8080)
+    app.run(host='127.0.0.1', port=80)
 
 
 if __name__ == '__main__':
